@@ -1,4 +1,3 @@
-
 //loss function functions
 function makePoint(x, y)
 {
@@ -35,8 +34,34 @@ function getPoints(slope, inter)
     return {x: [0, 10], y: [inter, slope * 10 + inter]}
 }
 
-//plotting code
-console.log("plots init")
+function generateFromMax(max) {
+    console.log("max ", max);
+    return 4*Math.random()*max - 2*max;
+}
+
+function initializeLine(x, y) {
+    
+    let max_slope;
+    // get the maximum size of slope between any two points
+    for (let i = 0; i < y.length; i++) {
+        for (let j = i + 1; j < y.length; j ++) {
+            let this_slope = Math.abs(
+                (y[j] - y[i]) / (x[j] - x[i])
+            );
+
+            if (!max_slope || max_slope < this_slope) {
+                max_slope = this_slope;
+            }
+
+        }
+    }
+    
+    // choose an intercept and slope that is 
+    let slope = generateFromMax(max_slope);
+    let intercept = generateFromMax(Math.max(...y));
+
+    return [slope, intercept];
+}
 
 TESTER = document.getElementById('tester');
 
@@ -64,6 +89,22 @@ let trace_points = {
 //     mode:"line",
 //     type: "scatter"
 // }
+
+let init_res = initializeLine(points.x, points.y);
+
+let init_slope = init_res[0];
+let init_intercept = init_res[1];
+
+let max_x = Math.max(...points.x); 
+
+let line_points = {
+    "x": [
+        0, max_x
+    ],
+    "y": [
+        init_intercept, init_intercept + init_slope*max_x
+    ]
+}
 
 function makeData(slope, intercept)
 {
@@ -99,4 +140,8 @@ Plotly.newPlot(TESTER, data);
 
 
 // console.log( Plotly.version );
+console.log(trace_line);
 
+let data = [trace_points, trace_line];
+
+Plotly.newPlot( TESTER, data);
