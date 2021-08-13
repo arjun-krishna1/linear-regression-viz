@@ -21,15 +21,11 @@ function initializeLine(x, y) {
     }
     
     // choose an intercept and slope that is 
-    console.log("max_slop")
     let slope = generateFromMax(max_slope);
     let intercept = generateFromMax(Math.max(...y));
-    console.log("slope, intercept ", slope, intercept);
 
     return [slope, intercept];
 }
-
-console.log("plots init")
 
 TESTER = document.getElementById('tester');
 
@@ -50,11 +46,7 @@ let init_res = initializeLine(points.x, points.y);
 let init_slope = init_res[0];
 let init_intercept = init_res[1];
 
-
-console.log('init_stuff', init_slope, init_intercept);
 let max_x = Math.max(...points.x); 
-
-console.log('init_slope ', init_slope)
 
 let line_points = {
     "x": [
@@ -73,8 +65,7 @@ let trace_line = {
 }
 
 console.log(trace_line);
+
 let data = [trace_points, trace_line];
 
 Plotly.newPlot( TESTER, data);
-
-console.log( Plotly.version );
